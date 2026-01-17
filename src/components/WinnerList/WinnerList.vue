@@ -1,18 +1,21 @@
 <template>
   <div class="winner-list">
     <div class="header">
-      <h3>🏆 中奖名单 ({{ winners.length }}人)</h3>
+      <h3>
+        <Icon name="trophy" size="lg" />
+        <span>中奖名单 ({{ winners.length }}人)</span>
+      </h3>
       <div class="actions">
         <button class="action-btn" @click="exportToExcel">
-          <span>📊</span>
+          <Icon name="table" size="sm" />
           <span>导出 Excel</span>
         </button>
         <button class="action-btn" @click="exportToCsv">
-          <span>📄</span>
+          <Icon name="file-text" size="sm" />
           <span>导出 CSV</span>
         </button>
         <button class="action-btn danger" @click="clearAll">
-          <span>🗑️</span>
+          <Icon name="trash" size="sm" />
           <span>清空</span>
         </button>
       </div>
@@ -30,7 +33,7 @@
           class="prize-group-header"
           :style="{ borderColor: prize.color, background: `${prize.color}20` }"
         >
-          <span class="prize-icon">🎉</span>
+          <Icon name="party" size="lg" class="prize-icon" />
           <span class="prize-title">{{ prize.name }}</span>
           <span class="prize-count">{{ prizeWinners[prize.id].length }}人</span>
         </div>
@@ -48,23 +51,25 @@
             <div class="card-header">
               <div class="winner-avatar">{{ winner.participant.name?.[0] || '?' }}</div>
               <span class="winner-name">{{ winner.participant.name }}</span>
-              <button class="remove-btn" @click="removeWinner(winner.participant.id)">✕</button>
+              <button class="remove-btn" @click="removeWinner(winner.participant.id)">
+                <Icon name="x" size="sm" />
+              </button>
             </div>
             <div class="card-body">
               <div v-if="winner.participant.id" class="card-info">
-                <span class="info-icon">🆔</span>
+                <Icon name="id-card" size="sm" class="info-icon" />
                 <span>{{ winner.participant.id }}</span>
               </div>
               <div v-if="winner.participant.phone" class="card-info">
-                <span class="info-icon">📱</span>
+                <Icon name="phone" size="sm" class="info-icon" />
                 <span>{{ winner.participant.phone }}</span>
               </div>
               <div v-if="winner.participant.department" class="card-info">
-                <span class="info-icon">🏢</span>
+                <Icon name="building" size="sm" class="info-icon" />
                 <span>{{ winner.participant.department }}</span>
               </div>
               <div class="card-info time">
-                <span class="info-icon">🕐</span>
+                <Icon name="clock" size="sm" class="info-icon" />
                 <span>{{ formatTime(winner.timestamp) }}</span>
               </div>
             </div>
@@ -75,14 +80,19 @@
 
     <!-- 空状态 -->
     <div v-else class="empty-state">
-      <div class="empty-icon">📭</div>
+      <div class="empty-icon">
+        <Icon name="inbox" size="2xl" />
+      </div>
       <p class="empty-text">暂无中奖记录</p>
       <p class="empty-hint">开始抽奖后，中奖名单将显示在这里</p>
     </div>
 
     <!-- 历史记录 -->
     <div v-if="history.length > 0" class="history-section">
-      <h4>📜 历史记录</h4>
+      <h4>
+        <Icon name="history" size="md" />
+        <span>历史记录</span>
+      </h4>
       <div class="history-list">
         <div
           v-for="(record, index) in history"
@@ -94,7 +104,8 @@
             <span class="history-time">{{ formatHistoryTime(record) }}</span>
           </div>
           <button class="view-btn" @click="viewHistory(index)">
-            查看
+            <Icon name="eye" size="sm" />
+            <span>查看</span>
           </button>
         </div>
       </div>
@@ -108,6 +119,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { useLotteryStore } from '@/stores/lottery'
 import * as XLSX from 'xlsx'
 import { exportToCSV } from '@/utils/csv'
+import Icon from '@/components/common/Icon.vue'
 
 const store = useLotteryStore()
 const emit = defineEmits(['viewHistory'])
@@ -232,10 +244,14 @@ function viewHistory(index: number) {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #e2e8f0;
+  background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 50%, #F43F5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   display: flex;
   align-items: center;
   gap: 12px;
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
 }
 
 .actions {
@@ -248,10 +264,10 @@ function viewHistory(index: number) {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 20px;
-  color: #667eea;
+  color: #A78BFA;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -259,8 +275,9 @@ function viewHistory(index: number) {
 }
 
 .action-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(244, 63, 94, 0.3) 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 .action-btn.danger {
@@ -295,7 +312,7 @@ function viewHistory(index: number) {
 }
 
 .prize-icon {
-  font-size: 24px;
+  color: inherit;
 }
 
 .prize-title {
@@ -324,9 +341,9 @@ function viewHistory(index: number) {
 }
 
 .winner-card:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(124, 58, 237, 0.05);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3), 0 0 40px rgba(244, 63, 94, 0.1);
 }
 
 .card-header {
@@ -340,13 +357,14 @@ function viewHistory(index: number) {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
   color: white;
   font-size: 20px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
 }
 
 .winner-name {
@@ -363,7 +381,6 @@ function viewHistory(index: number) {
   background: rgba(239, 68, 68, 0.2);
   border: none;
   color: #ef4444;
-  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
@@ -391,7 +408,8 @@ function viewHistory(index: number) {
 }
 
 .card-info .info-icon {
-  font-size: 16px;
+  color: #A78BFA;
+  flex-shrink: 0;
 }
 
 .card-info.time {
@@ -407,9 +425,17 @@ function viewHistory(index: number) {
 }
 
 .empty-icon {
-  font-size: 80px;
-  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(244, 63, 94, 0.1) 100%);
+  border-radius: 50%;
+  color: #A78BFA;
   opacity: 0.5;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
 }
 
 .empty-text {
@@ -438,6 +464,9 @@ function viewHistory(index: number) {
   color: #9ca3af;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .history-list {
@@ -458,8 +487,9 @@ function viewHistory(index: number) {
 }
 
 .history-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(102, 126, 234, 0.2);
+  background: rgba(124, 58, 237, 0.05);
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
 }
 
 .history-info {
@@ -478,11 +508,14 @@ function viewHistory(index: number) {
 }
 
 .view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 16px;
-  background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 20px;
-  color: #667eea;
+  color: #A78BFA;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -490,8 +523,9 @@ function viewHistory(index: number) {
 }
 
 .view-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(244, 63, 94, 0.3) 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 @media (max-width: 768px) {

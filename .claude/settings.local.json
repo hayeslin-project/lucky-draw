@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(ui-ux-pro-max)",
+      "Bash(python3:*)",
+      "Bash(npx vue-tsc:*)"
+    ]
+  }
+}

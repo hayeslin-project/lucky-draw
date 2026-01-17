@@ -2,7 +2,10 @@
   <div class="lottery-board">
     <!-- 当前奖项信息 -->
     <div class="current-prize">
-      <div class="prize-badge">🎉 {{ currentPrize?.name || '请选择奖项' }}</div>
+      <div class="prize-badge">
+        <Icon name="party" size="md" />
+        <span>{{ currentPrize?.name || '请选择奖项' }}</span>
+      </div>
       <div class="prize-count">
         <span class="count-number">{{ currentPrize?.count || 0 }}</span>
         <span class="count-label">人</span>
@@ -13,7 +16,9 @@
     <div class="lottery-display">
       <!-- 等待开始状态 -->
       <div v-if="!isRunning && !isAnimating" class="waiting-state">
-        <div class="waiting-icon">🎲</div>
+        <div class="waiting-icon">
+          <Icon name="dice" size="2xl" />
+        </div>
         <p class="waiting-text">点击"开始抽奖"</p>
         <p class="waiting-hint">准备开始新一期抽奖</p>
       </div>
@@ -29,7 +34,9 @@
           >
             <div class="card-inner">
               <div class="card-front">
-                <div class="card-icon">?</div>
+                <div class="card-icon">
+                  <Icon name="question" size="xl" />
+                </div>
               </div>
               <div class="card-back">
                 <span class="winner-name">{{ name }}</span>
@@ -50,7 +57,7 @@
           :disabled="!canStart"
           @click="startLottery"
         >
-          <span class="btn-icon">▶</span>
+          <Icon name="play" size="md" />
           <span>开始抽奖</span>
         </button>
         <button
@@ -58,19 +65,20 @@
           class="btn btn-danger"
           @click="stopLottery"
         >
-          <span class="btn-icon">⏸</span>
+          <Icon name="pause" size="md" />
           <span>停止</span>
         </button>
       </template>
       <div v-else class="confirm-actions">
         <button class="btn btn-secondary" @click="cancelLottery">
+          <Icon name="x" size="md" />
           <span>取消</span>
         </button>
         <button
           class="btn btn-success"
           @click="confirmResult"
         >
-          <span class="btn-icon">✓</span>
+          <Icon name="check" size="md" />
           <span>确认结果</span>
         </button>
       </div>
@@ -84,7 +92,7 @@
       :disabled="!canStartGroupLottery"
       @click="startGroupLottery"
     >
-      <span class="btn-icon">👥</span>
+      <Icon name="users" size="md" />
       <span>分组抽奖</span>
     </button>
 
@@ -108,6 +116,7 @@ import { ref, computed, watch, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useLotteryStore } from '@/stores/lottery'
 import { createAnimationGenerator } from '@/utils/lottery'
+import Icon from '@/components/common/Icon.vue'
 
 const store = useLotteryStore()
 const emit = defineEmits(['result', 'groupResult'])
@@ -293,26 +302,28 @@ onUnmounted(() => {
 }
 
 .prize-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   padding: 12px 32px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
-  border: 2px solid rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(244, 63, 94, 0.3) 100%);
+  border: 2px solid rgba(124, 58, 237, 0.5);
   border-radius: 50px;
   font-size: 20px;
   font-weight: 600;
   color: white;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.4), 0 0 60px rgba(244, 63, 94, 0.2);
   margin-bottom: 16px;
-  animation: glow 2s ease-in-out infinite alternate;
+  animation: neonGlow 2s ease-in-out infinite alternate;
 }
 
-@keyframes glow {
+@keyframes neonGlow {
   from {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.4), 0 0 40px rgba(244, 63, 94, 0.2);
   }
   to {
-    box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.6), 0 0 80px rgba(244, 63, 94, 0.4);
   }
 }
 
@@ -326,11 +337,12 @@ onUnmounted(() => {
 .count-number {
   font-size: 56px;
   font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%, #f093fb 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 50%, #F43F5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1;
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
 }
 
 .count-label {
@@ -366,17 +378,27 @@ onUnmounted(() => {
 }
 
 .waiting-icon {
-  font-size: 80px;
-  margin-bottom: 24px;
-  animation: bounce 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border-radius: 50%;
+  color: #A78BFA;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.3), 0 0 60px rgba(244, 63, 94, 0.2);
+  animation: floatGlow 3s ease-in-out infinite;
 }
 
-@keyframes bounce {
+@keyframes floatGlow {
   0%, 100% {
     transform: translateY(0) rotate(0deg);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.3), 0 0 60px rgba(244, 63, 94, 0.2);
   }
   50% {
     transform: translateY(-15px) rotate(5deg);
+    box-shadow: 0 0 50px rgba(124, 58, 237, 0.5), 0 0 100px rgba(244, 63, 94, 0.3);
   }
 }
 
@@ -437,30 +459,34 @@ onUnmounted(() => {
 }
 
 .card-front {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-  border: 2px solid rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border: 2px solid rgba(124, 58, 237, 0.4);
   backdrop-filter: blur(10px);
-  animation: pulse 1s ease-in-out infinite;
+  animation: cardPulse 1s ease-in-out infinite;
 }
 
-@keyframes pulse {
+@keyframes cardPulse {
   0%, 100% {
     transform: scale(1);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
   }
   50% {
     transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
   }
 }
 
 .card-icon {
-  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .card-back {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
   transform: rotateY(180deg);
-  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 10px 40px rgba(124, 58, 237, 0.5), 0 0 60px rgba(244, 63, 94, 0.3);
 }
 
 .winner-name {
@@ -522,15 +548,15 @@ onUnmounted(() => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
   color: white;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 .btn-danger {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #F43F5E 0%, #FF6B6B 100%);
   color: white;
-  box-shadow: 0 4px 20px rgba(245, 87, 108, 0.4);
+  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4);
 }
 
 .btn-secondary {
@@ -547,10 +573,6 @@ onUnmounted(() => {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   color: white;
   box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
-}
-
-.btn-icon {
-  font-size: 20px;
 }
 
 .confirm-actions {

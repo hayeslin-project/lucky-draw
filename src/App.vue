@@ -7,7 +7,9 @@
     <header class="header">
       <div class="header-content">
         <div class="logo">
-          <div class="logo-icon">🎲</div>
+          <div class="logo-icon">
+            <Icon name="dice" size="xl" />
+          </div>
           <h1 class="title">LUCKY DRAW</h1>
         </div>
         <nav class="nav">
@@ -17,7 +19,7 @@
             :class="['nav-btn', { active: activeTab === tab.id }]"
             @click="activeTab = tab.id"
           >
-            <span>{{ tab.icon }}</span>
+            <Icon :name="tab.icon" size="md" />
             <span>{{ tab.name }}</span>
           </button>
         </nav>
@@ -55,28 +57,46 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h2>使用说明</h2>
-          <button class="close-btn" @click="showHelp = false">✕</button>
+          <button class="close-btn" @click="showHelp = false">
+            <Icon name="x" size="sm" />
+          </button>
         </div>
         <div class="modal-body">
           <div class="help-section">
-            <div class="help-icon">📁</div>
-            <h3>1. 上传名单</h3>
-            <p>点击"名单管理"，上传CSV格式文件。第一行为列名，建议包含：工号、姓名、手机号、部门等字段。</p>
+            <div class="help-icon">
+              <Icon name="folder" size="xl" />
+            </div>
+            <div class="help-content">
+              <h3>1. 上传名单</h3>
+              <p>点击"名单管理"，上传CSV格式文件。第一行为列名，建议包含：工号、姓名、手机号、部门等字段。</p>
+            </div>
           </div>
           <div class="help-section">
-            <div class="help-icon">⚙️</div>
-            <h3>2. 配置奖项</h3>
-            <p>点击"抽奖设置"，配置奖项名称、抽取人数。支持普通随机、权重抽奖、分组抽奖三种模式。</p>
+            <div class="help-icon">
+              <Icon name="settings" size="xl" />
+            </div>
+            <div class="help-content">
+              <h3>2. 配置奖项</h3>
+              <p>点击"抽奖设置"，配置奖项名称、抽取人数。支持普通随机、权重抽奖、分组抽奖三种模式。</p>
+            </div>
           </div>
           <div class="help-section">
-            <div class="help-icon">🎯</div>
-            <h3>3. 开始抽奖</h3>
-            <p>选择奖项后，点击"开始抽奖"。名字滚动显示，点击"停止"显示结果，点击"确认"保存。</p>
+            <div class="help-icon">
+              <Icon name="dice" size="xl" />
+            </div>
+            <div class="help-content">
+              <h3>3. 开始抽奖</h3>
+              <p>选择奖项后，点击"开始抽奖"。名字滚动显示，点击"停止"显示结果，点击"确认"保存。</p>
+            </div>
           </div>
           <div class="help-section">
-            <div class="help-icon">📊</div>
-            <h3>4. 导出结果</h3>
-            <p>在"中奖名单"中查看中奖记录，支持导出为Excel或CSV格式。</p>
+            <div class="help-icon">
+              <Icon name="download" size="xl" />
+            </div>
+            <div class="help-content">
+              <h3>4. 导出结果</h3>
+              <p>在"中奖名单"中查看中奖记录，支持导出为Excel或CSV格式。</p>
+            </div>
           </div>
           <div class="csv-example">
             <h4>CSV文件格式示例：</h4>
@@ -93,8 +113,14 @@
     <!-- 中奖结果弹窗 -->
     <div v-if="showResultDialog" class="modal-overlay">
       <div class="result-modal" @click.stop>
-        <button class="result-close-btn" @click="showResultDialog = false">✕</button>
-        <div class="result-header">🎉 恭喜中奖 🎉</div>
+        <button class="result-close-btn" @click="showResultDialog = false">
+          <Icon name="x" size="sm" />
+        </button>
+        <div class="result-header">
+          <Icon name="party" size="xl" />
+          <span>恭喜中奖</span>
+          <Icon name="party" size="xl" />
+        </div>
         <div class="result-body">
           <div v-for="winner in currentResult" :key="winner.id" class="result-card">
             <span class="winner-name">{{ winner.name }}</span>
@@ -108,8 +134,14 @@
     <!-- 分组抽奖结果弹窗 -->
     <div v-if="showGroupResultDialog" class="modal-overlay">
       <div class="result-modal group-modal" @click.stop>
-        <button class="result-close-btn" @click="showGroupResultDialog = false">✕</button>
-        <div class="result-header">🎉 分组抽奖结果 🎉</div>
+        <button class="result-close-btn" @click="showGroupResultDialog = false">
+          <Icon name="x" size="sm" />
+        </button>
+        <div class="result-header">
+          <Icon name="party" size="xl" />
+          <span>分组抽奖结果</span>
+          <Icon name="party" size="xl" />
+        </div>
         <div class="group-result-body">
           <div
             v-for="group in currentGroupResult"
@@ -137,7 +169,9 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h2>历史记录</h2>
-          <button class="close-btn" @click="showHistoryDialog = false">✕</button>
+          <button class="close-btn" @click="showHistoryDialog = false">
+            <Icon name="x" size="sm" />
+          </button>
         </div>
         <div class="history-detail">
           <div
@@ -175,6 +209,7 @@ import CsvUploader from '@/components/ParticipantList/CsvUploader.vue'
 import SettingsPanel from '@/components/SettingsPanel/SettingsPanel.vue'
 import LotteryBoard from '@/components/LotteryBoard/LotteryBoard.vue'
 import WinnerList from '@/components/WinnerList/WinnerList.vue'
+import Icon from '@/components/common/Icon.vue'
 
 const store = useLotteryStore()
 
@@ -185,10 +220,10 @@ const showGroupResultDialog = ref(false)
 const showHistoryDialog = ref(false)
 
 const tabs = [
-  { id: 'list', name: '名单管理', icon: '📋' },
-  { id: 'settings', name: '抽奖设置', icon: '⚙️' },
-  { id: 'lottery', name: '开始抽奖', icon: '🎲' },
-  { id: 'winners', name: '中奖名单', icon: '🏆' },
+  { id: 'list', name: '名单管理', icon: 'clipboard-list' },
+  { id: 'settings', name: '抽奖设置', icon: 'settings' },
+  { id: 'lottery', name: '开始抽奖', icon: 'dice' },
+  { id: 'winners', name: '中奖名单', icon: 'trophy' },
 ]
 
 const currentResult = ref<any[]>([])
@@ -332,7 +367,7 @@ function initParticles() {
 
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(135deg, #0F0F23 0%, #1a0a2e 50%, #0a1628 100%);
   overflow-x: hidden;
 }
 
@@ -372,24 +407,39 @@ function initParticles() {
 }
 
 .logo-icon {
-  font-size: 32px;
-  animation: bounce 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5), 0 0 40px rgba(244, 63, 94, 0.3);
+  animation: neonPulse 2s infinite;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+@keyframes neonPulse {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.5), 0 0 40px rgba(244, 63, 94, 0.3);
+  }
+  50% {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.7), 0 0 60px rgba(244, 63, 94, 0.5);
+  }
 }
 
 .title {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%, #f093fb 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 50%, #F43F5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
 }
 
 .nav {
@@ -402,26 +452,45 @@ function initParticles() {
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 12px;
-  color: #9ca3af;
+  color: #A78BFA;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.nav-btn:hover::before {
+  left: 100%;
 }
 
 .nav-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.5);
   transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
 
 .nav-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
   border-color: transparent;
   color: white;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.5), 0 0 30px rgba(244, 63, 94, 0.3);
 }
 
 .main {
@@ -468,8 +537,8 @@ function initParticles() {
 }
 
 .modal-content {
-  background: linear-gradient(135deg, #1e1e2e 0%, #2d2d3f 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #0F0F23 0%, #1a0a2e 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 24px;
   padding: 32px;
   max-width: 600px;
@@ -477,6 +546,7 @@ function initParticles() {
   max-height: 80vh;
   overflow-y: auto;
   animation: scaleIn 0.3s ease;
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.2), 0 0 80px rgba(244, 63, 94, 0.1);
 }
 
 @keyframes scaleIn {
@@ -511,14 +581,17 @@ function initParticles() {
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #9ca3af;
-  font-size: 18px;
   cursor: pointer;
   transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .close-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
+  transform: rotate(90deg);
 }
 
 .modal-body {
@@ -529,23 +602,42 @@ function initParticles() {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
-  padding: 16px;
+  padding: 20px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s;
+}
+
+.help-section:hover {
+  background: rgba(102, 126, 234, 0.05);
+  border-color: rgba(102, 126, 234, 0.2);
 }
 
 .help-icon {
-  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border-radius: 16px;
+  color: #A78BFA;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
 }
 
-.help-section h3 {
+.help-content {
+  flex: 1;
+}
+
+.help-content h3 {
   margin: 0 0 8px 0;
   font-size: 16px;
   color: #e2e8f0;
 }
 
-.help-section p {
+.help-content p {
   margin: 0;
   font-size: 14px;
   color: #9ca3af;
@@ -588,25 +680,27 @@ function initParticles() {
 }
 
 .modal-btn.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
   color: white;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
 }
 
 .modal-btn.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5), 0 0 40px rgba(244, 63, 94, 0.3);
 }
 
 /* Result modal */
 .result-modal {
   position: relative;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.9) 0%, rgba(244, 63, 94, 0.9) 100%);
   border-radius: 24px;
   padding: 40px;
   text-align: center;
   animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 60px rgba(124, 58, 237, 0.5), 0 0 100px rgba(244, 63, 94, 0.3);
 }
 
 .result-close-btn {
@@ -619,7 +713,6 @@ function initParticles() {
   background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
-  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
@@ -629,7 +722,7 @@ function initParticles() {
 
 .result-close-btn:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(90deg);
 }
 
 .result-confirm-btn {
@@ -652,6 +745,10 @@ function initParticles() {
 }
 
 .result-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
   font-size: 32px;
   font-weight: 700;
   color: white;

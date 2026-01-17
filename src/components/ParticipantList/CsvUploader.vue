@@ -3,7 +3,9 @@
     <!-- 上传区域 -->
     <div class="upload-area" @drop="handleDrop" @dragover.prevent @dragenter.prevent>
       <div class="upload-content">
-        <div class="upload-icon">📁</div>
+        <div class="upload-icon">
+          <Icon name="upload" size="2xl" />
+        </div>
         <p class="upload-text">拖拽文件到此处</p>
         <p class="upload-subtext">或 <span class="upload-link" @click="triggerFileInput">点击上传</span></p>
         <p class="upload-tip">支持 CSV 格式，第一行为列名</p>
@@ -21,9 +23,12 @@
     <template v-if="csvHeaders.length > 0">
       <div class="mapping-config">
         <div class="section-header">
-          <h3>📋 列映射配置</h3>
+          <h3>
+            <Icon name="clipboard-list" size="lg" />
+            <span>列映射配置</span>
+          </h3>
           <button class="auto-btn" @click="autoMap">
-            <span>✨</span>
+            <Icon name="sparkles" size="sm" />
             <span>自动识别</span>
           </button>
         </div>
@@ -101,22 +106,25 @@
     <template v-if="participants.length > 0">
       <div class="preview-section">
         <div class="section-header">
-          <h3>👥 名单预览 (共 {{ participants.length }} 人)</h3>
+          <h3>
+            <Icon name="users" size="lg" />
+            <span>名单预览 (共 {{ participants.length }} 人)</span>
+          </h3>
           <div class="actions">
             <button class="action-btn" @click="checkDuplicates">
-              <span>🔍</span>
+              <Icon name="search" size="sm" />
               <span>检查重复</span>
             </button>
             <button class="action-btn" @click="loadSampleData">
-              <span>📋</span>
+              <Icon name="clipboard-list" size="sm" />
               <span>示例数据</span>
             </button>
             <button class="action-btn" @click="saveData">
-              <span>💾</span>
+              <Icon name="save" size="sm" />
               <span>保存</span>
             </button>
             <button class="action-btn danger" @click="clearData">
-              <span>🗑️</span>
+              <Icon name="trash" size="sm" />
               <span>清空</span>
             </button>
           </div>
@@ -125,13 +133,15 @@
         <!-- 重复检查结果 -->
         <div v-if="duplicateResult" class="duplicate-alert" :class="duplicateResult.hasDuplicate ? 'warning' : 'success'">
           <div class="alert-header">
-            <span class="alert-icon">{{ duplicateResult.hasDuplicate ? '⚠️' : '✅' }}</span>
+            <Icon :name="duplicateResult.hasDuplicate ? 'help-circle' : 'check'" size="md" class="alert-icon" />
             <span class="alert-title">{{ duplicateResult.hasDuplicate ? '发现重复数据' : '无重复数据' }}</span>
             <button v-if="duplicateResult.hasDuplicate" class="remove-duplicate-btn" @click="removeDuplicates">
-              <span>🗑️</span>
+              <Icon name="trash" size="sm" />
               <span>移除重复项</span>
             </button>
-            <button class="alert-close" @click="duplicateResult = null">✕</button>
+            <button class="alert-close" @click="duplicateResult = null">
+              <Icon name="x" size="sm" />
+            </button>
           </div>
           <div v-if="duplicateResult.hasDuplicate" class="alert-body">
             <div v-if="duplicateResult.duplicateIds.length > 0" class="duplicate-group">
@@ -153,7 +163,9 @@
           >
             <div class="card-header">
               <div class="participant-avatar">{{ p.name?.[0] || '?' }}</div>
-              <button class="remove-btn" @click="removeParticipant(index)">✕</button>
+              <button class="remove-btn" @click="removeParticipant(index)">
+                <Icon name="x" size="sm" />
+              </button>
             </div>
             <div class="card-body">
               <div class="participant-name">{{ p.name }}</div>
@@ -179,6 +191,7 @@ import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useLotteryStore } from '@/stores/lottery'
 import { parseCSV, transformToParticipants, autoDetectColumns } from '@/utils/csv'
+import Icon from '@/components/common/Icon.vue'
 
 const store = useLotteryStore()
 
@@ -448,7 +461,7 @@ function loadSampleData() {
   justify-content: center;
   padding: 48px 32px;
   background: rgba(255, 255, 255, 0.03);
-  border: 2px dashed rgba(102, 126, 234, 0.4);
+  border: 2px dashed rgba(124, 58, 237, 0.4);
   border-radius: 24px;
   transition: all 0.3s;
   cursor: pointer;
@@ -456,14 +469,23 @@ function loadSampleData() {
 
 .upload-content:hover,
 .upload-content.drag-over {
-  background: rgba(102, 126, 234, 0.1);
-  border-color: rgba(102, 126, 234, 0.8);
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.8);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
 }
 
 .upload-icon {
-  font-size: 64px;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border-radius: 50%;
+  color: #A78BFA;
   animation: float 3s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
 }
 
 @keyframes float {
@@ -485,13 +507,13 @@ function loadSampleData() {
 }
 
 .upload-link {
-  color: #667eea;
+  color: #A78BFA;
   cursor: pointer;
   text-decoration: underline;
 }
 
 .upload-link:hover {
-  color: #764ba2;
+  color: #F43F5E;
 }
 
 .upload-tip {
@@ -526,7 +548,7 @@ function loadSampleData() {
   color: #e2e8f0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .auto-btn {
@@ -534,10 +556,10 @@ function loadSampleData() {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 20px;
-  color: #667eea;
+  color: #A78BFA;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -545,8 +567,9 @@ function loadSampleData() {
 }
 
 .auto-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(244, 63, 94, 0.3) 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 .mapping-fields {
@@ -588,14 +611,14 @@ function loadSampleData() {
 }
 
 .field-select:hover {
-  border-color: rgba(102, 126, 234, 0.5);
+  border-color: rgba(124, 58, 237, 0.5);
   background: rgba(255, 255, 255, 0.08);
 }
 
 .field-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3), 0 0 15px rgba(124, 58, 237, 0.2);
 }
 
 /* 预览区域 */
@@ -636,7 +659,8 @@ function loadSampleData() {
 }
 
 .alert-icon {
-  font-size: 18px;
+  color: inherit;
+  flex-shrink: 0;
 }
 
 .alert-title {
@@ -668,15 +692,17 @@ function loadSampleData() {
 }
 
 .alert-close {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #9ca3af;
-  font-size: 12px;
   cursor: pointer;
   transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .alert-close:hover {
@@ -719,10 +745,10 @@ function loadSampleData() {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 20px;
-  color: #667eea;
+  color: #A78BFA;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -730,8 +756,9 @@ function loadSampleData() {
 }
 
 .action-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(244, 63, 94, 0.3) 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 .action-btn.danger {
@@ -763,10 +790,10 @@ function loadSampleData() {
 }
 
 .participant-card:hover {
-  border-color: rgba(102, 126, 234, 0.4);
-  background: rgba(102, 126, 234, 0.05);
+  border-color: rgba(124, 58, 237, 0.4);
+  background: rgba(124, 58, 237, 0.05);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3), 0 0 40px rgba(244, 63, 94, 0.1);
 }
 
 .card-header {
@@ -774,20 +801,21 @@ function loadSampleData() {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: rgba(102, 126, 234, 0.1);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(244, 63, 94, 0.1) 100%);
 }
 
 .participant-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
   color: white;
   font-size: 18px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
 }
 
 .remove-btn {
@@ -797,7 +825,6 @@ function loadSampleData() {
   background: rgba(239, 68, 68, 0.2);
   border: none;
   color: #ef4444;
-  font-size: 12px;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
@@ -844,9 +871,10 @@ function loadSampleData() {
 }
 
 .more-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(102, 126, 234, 0.4);
-  color: #667eea;
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.4);
+  color: #A78BFA;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
 
 /* 滚动条样式 */

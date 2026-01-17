@@ -1,7 +1,10 @@
 <template>
   <div class="settings-panel">
     <div class="panel-header">
-      <h2>⚙️ 抽奖设置</h2>
+      <h2>
+        <Icon name="settings" size="lg" />
+        <span>抽奖设置</span>
+      </h2>
     </div>
 
     <!-- 抽奖模式 -->
@@ -14,7 +17,7 @@
           :class="['mode-btn', { active: config.mode === mode.value }]"
           @click="updateMode(mode.value)"
         >
-          <span class="mode-icon">{{ mode.icon }}</span>
+          <Icon :name="mode.icon" size="xl" />
           <span>{{ mode.name }}</span>
         </button>
       </div>
@@ -25,7 +28,7 @@
       <div class="section-header">
         <label class="section-label">奖项设置</label>
         <button class="add-btn" @click="addPrize">
-          <span>+</span>
+          <Icon name="plus" size="sm" />
           <span>添加奖项</span>
         </button>
       </div>
@@ -45,14 +48,18 @@
               class="delete-btn"
               @click.stop="removePrize(prize.id)"
             >
-              ✕
+              <Icon name="x" size="sm" />
             </button>
           </div>
           <div class="prize-count">
             <div class="count-input">
-              <button class="count-btn" @click.stop="updatePrizeCount(prize.id, -1)">−</button>
+              <button class="count-btn" @click.stop="updatePrizeCount(prize.id, -1)">
+                <Icon name="minus" size="sm" />
+              </button>
               <span class="count-number">{{ prize.count }}</span>
-              <button class="count-btn" @click.stop="updatePrizeCount(prize.id, 1)">+</button>
+              <button class="count-btn" @click.stop="updatePrizeCount(prize.id, 1)">
+                <Icon name="plus" size="sm" />
+              </button>
             </div>
             <span class="count-label">人</span>
           </div>
@@ -79,9 +86,13 @@
             <div v-for="prize in config.prizes" :key="prize.id" class="group-prize-row">
               <span class="prize-label">{{ prize.name }}</span>
               <div class="count-input small">
-                <button class="count-btn" @click="adjustGroupCount(dept, prize.id, -1)">−</button>
+                <button class="count-btn" @click="adjustGroupCount(dept, prize.id, -1)">
+                  <Icon name="minus" size="sm" />
+                </button>
                 <span class="count-number">{{ getGroupCount(dept, prize.id) }}</span>
-                <button class="count-btn" @click="adjustGroupCount(dept, prize.id, 1)">+</button>
+                <button class="count-btn" @click="adjustGroupCount(dept, prize.id, 1)">
+                  <Icon name="plus" size="sm" />
+                </button>
               </div>
             </div>
           </div>
@@ -109,17 +120,23 @@
     <!-- 统计信息 -->
     <div class="stats-section">
       <div class="stat-card">
-        <div class="stat-icon">👥</div>
+        <div class="stat-icon">
+          <Icon name="users" size="lg" />
+        </div>
         <div class="stat-value">{{ stats.total }}</div>
         <div class="stat-label">参与人数</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">🏆</div>
+        <div class="stat-icon">
+          <Icon name="trophy" size="lg" />
+        </div>
         <div class="stat-value">{{ stats.winnerCount }}</div>
         <div class="stat-label">已中奖</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">👤</div>
+        <div class="stat-icon">
+          <Icon name="user" size="lg" />
+        </div>
         <div class="stat-value">{{ stats.remainingCount }}</div>
         <div class="stat-label">剩余人数</div>
       </div>
@@ -152,6 +169,7 @@
 import { computed, watch } from 'vue'
 import { useLotteryStore } from '@/stores/lottery'
 import type { LotteryMode } from '@/utils/lottery'
+import Icon from '@/components/common/Icon.vue'
 
 const store = useLotteryStore()
 
@@ -165,9 +183,9 @@ const stats = computed(() => store.stats)
 const prizeStats = computed(() => store.prizeStats)
 
 const modes = [
-  { value: 'normal' as LotteryMode, name: '普通随机', icon: '🎲' },
-  { value: 'weighted' as LotteryMode, name: '权重抽奖', icon: '⚖️' },
-  { value: 'group' as LotteryMode, name: '分组抽奖', icon: '👥' },
+  { value: 'normal' as LotteryMode, name: '普通随机', icon: 'dice' },
+  { value: 'weighted' as LotteryMode, name: '权重抽奖', icon: 'scale' },
+  { value: 'group' as LotteryMode, name: '分组抽奖', icon: 'users' },
 ]
 
 // 分组设置（从 store 获取）
@@ -274,10 +292,14 @@ function removePrize(prizeId: string) {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: #e2e8f0;
+  background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 50%, #F43F5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   display: flex;
   align-items: center;
   gap: 12px;
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
 }
 
 .setting-section {
@@ -306,10 +328,10 @@ function removePrize(prizeId: string) {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 20px;
-  color: #667eea;
+  color: #A78BFA;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -317,8 +339,9 @@ function removePrize(prizeId: string) {
 }
 
 .add-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(244, 63, 94, 0.3) 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 /* 模式选择器 */
@@ -345,20 +368,17 @@ function removePrize(prizeId: string) {
 }
 
 .mode-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(102, 126, 234, 0.4);
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.5);
   transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
 }
 
 .mode-btn.active {
-  background: rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
-  color: #667eea;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-}
-
-.mode-icon {
-  font-size: 32px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border-color: #7C3AED;
+  color: #A78BFA;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), 0 0 30px rgba(244, 63, 94, 0.2);
 }
 
 /* 奖项卡片 */
@@ -378,14 +398,14 @@ function removePrize(prizeId: string) {
 }
 
 .prize-card:hover {
-  border-color: rgba(102, 126, 234, 0.5);
-  background: rgba(102, 126, 234, 0.05);
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(124, 58, 237, 0.05);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3), 0 0 40px rgba(244, 63, 94, 0.1);
 }
 
 .prize-card.active {
-  background: rgba(102, 126, 234, 0.1);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(244, 63, 94, 0.1) 100%);
 }
 
 .prize-header {
@@ -408,7 +428,6 @@ function removePrize(prizeId: string) {
   background: rgba(239, 68, 68, 0.2);
   border: none;
   color: #ef4444;
-  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
@@ -445,8 +464,6 @@ function removePrize(prizeId: string) {
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #e2e8f0;
-  font-size: 18px;
-  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
@@ -455,8 +472,9 @@ function removePrize(prizeId: string) {
 }
 
 .count-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
-  color: #667eea;
+  background: rgba(124, 58, 237, 0.3);
+  color: #A78BFA;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
 }
 
 .count-number {
@@ -512,8 +530,9 @@ function removePrize(prizeId: string) {
 }
 
 .group-checkbox input:checked + .checkbox-custom {
-  background: #667eea;
-  border-color: #667eea;
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
+  border-color: #7C3AED;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
 }
 
 .group-checkbox input:checked + .checkbox-custom::after {
@@ -606,7 +625,8 @@ function removePrize(prizeId: string) {
 }
 
 .option-switch input:checked + .switch-slider {
-  background: #667eea;
+  background: linear-gradient(135deg, #7C3AED 0%, #F43F5E 100%);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
 }
 
 .option-switch input:checked + .switch-slider::after {
@@ -629,26 +649,36 @@ function removePrize(prizeId: string) {
 
 .stat-card {
   padding: 20px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(244, 63, 94, 0.1) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 16px;
   text-align: center;
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
 }
 
 .stat-icon {
-  font-size: 28px;
-  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(244, 63, 94, 0.2) 100%);
+  border-radius: 12px;
+  color: #A78BFA;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
 }
 
 .stat-value {
   font-size: 32px;
   font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 50%, #F43F5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 4px;
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
 }
 
 .stat-label {
